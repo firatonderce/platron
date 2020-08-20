@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from 'react-native-geolocation-service'; //Emülatörde anlık konumu doğru olarak bu alabiliyor
+//import Geolocation from '@react-native-community/geolocation' //Fiziksel cihazda anlık konumu bu doğru olarak algılayabiliyor. 
 import Geocoder from 'react-native-geocoding';
 import { connect } from 'react-redux';
 import {addUserLocation} from '../store/action';
@@ -70,7 +71,7 @@ function locationScreen(props) {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#9933ff' }} >
+        <View style={{ flex: 1, backgroundColor: '#2F3A47' }} >
             <View style={styles.header}>
                 <Text style={styles.headerText}>Konumunuzu bulmamıza yardımcı olun</Text>
             </View>
@@ -90,15 +91,15 @@ function locationScreen(props) {
 
 
                 </View>
-                <View style={{ marginTop: '1%' }}>
-                    {location.types === "street_number" &&
-                      <Text style={{fontStyle:'italic'}}>Sokak numarası:{location.long_name}</Text>
+                <View style={{ marginTop: '1%', flex:1 }}>
+                    {location.types == "street_number" &&
+                      <Text style={styles.addressText}>Sokak numarası:{location.long_name}</Text>
                     }
                     {location.types != "street_number" && location.long_name != "Unnamed Road" &&
-                      <Text>{location.long_name}</Text>
+                      <Text style={styles.addressText} >{location.long_name}</Text>
                     }
-                    {location.types === "route" && location.long_name === "Unnamed Road" &&
-                      <Text style={{fontStyle:'italic'}}>Isimsiz bölge</Text>
+                    {location.types == "route" && location.long_name === "Unnamed Road" &&
+                      <Text style={styles.addressText}>Isimsiz bölge</Text>
                     }
                   
                     
@@ -139,6 +140,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    addressText: {
+        fontStyle:'italic', color: 'white'
+    },
     mapContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
     },
     continue: {
         borderWidth: 1,
-        borderColor: '#9933ff',
+        borderColor:'#2F3A47', //'#9933ff'
         backgroundColor: '#61A5EA',
         width: '75%',
         height: '30%',

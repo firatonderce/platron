@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "658731600806",
+    "firebase_url": "https://platron-3c046.firebaseio.com",
+    "project_id": "platron-3c046",
+    "storage_bucket": "platron-3c046.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658731600806:android:52198bd1da9c16a4e55d67",
+        "android_client_info": {
+          "package_name": "com.platronapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658731600806-inmdj0i0kj6fd40stkndd64da1orqd2a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0O9hPUb-qFH9MatFu1Pll6xxRlhcynM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658731600806-inmdj0i0kj6fd40stkndd64da1orqd2a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "658731600806-n555gjt4eakj8ovasmcig3f0t5d85hfb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.platronApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

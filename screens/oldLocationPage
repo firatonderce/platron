@@ -1,0 +1,18 @@
+  return (
+        <View>
+            <View>
+                <Text style={styles.warnText}>Siparişinizin teslim edilebilmesi için konumunuzu belirleyiniz.</Text>
+            </View>
+            <View style={styles.boxView}>
+                <Image
+                style={styles.map}
+                source={require('../datas/pictures/navigation.jpg')}
+                />
+            </View>
+            <TouchableOpacity
+                style={styles.continue}
+                onPress={() => props.navigation.navigate('Home')}>
+                <Text style={{ color: 'white' }}>Tamamla</Text>
+            </TouchableOpacity>
+        </View>
+    )

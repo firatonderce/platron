@@ -1,0 +1,10 @@
+export const ADD_BASKET = 'ADD_BASKET';
+export const REMOVE_BASKET = 'REMOVE_BASKET';
+export const ADD_USER_PHONE= 'ADD_USER_PHONE';
+export const ADD_OTP = 'ADD_OTP';
+export const ADD_MAIL = 'ADD_MAIL';
+export const ADD_NAME = 'ADD_NAME';
+export const LOG_IN = 'LOG_IN';
+export const LOG_OUT = 'LOG_OUT';
+export const REMOVE ='REMOVE';
+export const ADD_USER_LOCATION =' ADD_USER_LOCATION';

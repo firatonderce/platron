@@ -91,13 +91,13 @@ function locationScreen(props) {
 
                 </View>
                 <View style={{ marginTop: '1%' }}>
-                    {location.types == "street_number" &&
+                    {location.types === "street_number" &&
                       <Text style={{fontStyle:'italic'}}>Sokak numarası:{location.long_name}</Text>
                     }
                     {location.types != "street_number" && location.long_name != "Unnamed Road" &&
                       <Text>{location.long_name}</Text>
                     }
-                    {location.types == "route" && location.long_name === "Unnamed Road" &&
+                    {location.types === "route" && location.long_name === "Unnamed Road" &&
                       <Text style={{fontStyle:'italic'}}>Isimsiz bölge</Text>
                     }
                   

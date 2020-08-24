@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service'; //Emülatörde anlık konumu doğru olarak bu alabiliyor
-//import Geolocation from '@react-native-community/geolocation' 
+import {default as EmulatorGeolocation} from 'react-native-geolocation-service'; //Emülatörde anlık konumu doğru olarak bu alabiliyor
+import Geolocation from '@react-native-community/geolocation' 
 import Geocoder from 'react-native-geocoding';
 import { connect } from 'react-redux';
 import { addUserLocation } from '../store/action';
 import { API_KEY } from '../Infos/info';
 import DeviceInfo from 'react-native-device-info';
-
 
 Geocoder.init(API_KEY);
 
@@ -19,13 +18,13 @@ function locationScreen(props) {
     const [location, setLocation] = useState('Selam');
     const initialRegion = { longitude: 29.0231832, latitude: 41.0322351, latitudeDelta: 0.05, longitudeDelta: 0.05 };
     const [isEmulator, setIsEmulator] = useState(null);
-
+    
 
     useEffect(() => {
         getDeviceType().then(isEmulator => {  
             setIsEmulator(isEmulator);
-            console.log('isE=', isEmulator);
-            getLastLocation();
+            var locationProvider = isEmulator ? EmulatorGeolocation : Geolocation ;
+            getLastLocation(locationProvider);
         })
         return;
     }, []);
@@ -34,7 +33,7 @@ function locationScreen(props) {
         return DeviceInfo.isEmulator()
       }
 
-    const getLastLocation = () => {
+    const getLastLocation = (locationProvider) => {
         const postRetrieveLocation = (location) => {
             moveToRegion(location.coords);
             reverseGeocode(location.coords);
@@ -43,12 +42,10 @@ function locationScreen(props) {
         const onError = (error) => console.log('=== getLastLocation error response ===', error);
 
         const options = {
-            enableHighAccuracy: false,
+            enableHighAccuracy: true,
             timeout: 2000,
         };
-        console.log(isEmulator);
-        let locationProvider = isEmulator ? Geolocation_2 : Geolocation;
-
+    
         locationProvider.getCurrentPosition(postRetrieveLocation, onError, options);
     };
 

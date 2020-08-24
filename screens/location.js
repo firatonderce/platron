@@ -2,48 +2,63 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service'; //Emülatörde anlık konumu doğru olarak bu alabiliyor
-//import * as DeviceGeolocation from '@react-native-community/geolocation' 
+//import Geolocation from '@react-native-community/geolocation' 
 import Geocoder from 'react-native-geocoding';
 import { connect } from 'react-redux';
-import {addUserLocation} from '../store/action';
-import {API_KEY} from '../Infos/info';
+import { addUserLocation } from '../store/action';
+import { API_KEY } from '../Infos/info';
+import DeviceInfo from 'react-native-device-info';
+
 
 Geocoder.init(API_KEY);
 
 function locationScreen(props) {
     const maps = useRef();
     const marker = useRef();
-    const {navigation} = props;
+    const { navigation, id } = props;
     const [location, setLocation] = useState('Selam');
     const initialRegion = { longitude: 29.0231832, latitude: 41.0322351, latitudeDelta: 0.05, longitudeDelta: 0.05 };
-    console.log('mykey=', API_KEY);
+    const [isEmulator, setIsEmulator] = useState(null);
 
 
     useEffect(() => {
-        getLastLocation();
+        getDeviceType().then(isEmulator => {  
+            setIsEmulator(isEmulator);
+            console.log('isE=', isEmulator);
+            getLastLocation();
+        })
         return;
     }, []);
 
-    const getLastLocation = () => {
+    const getDeviceType = () => {
+        return DeviceInfo.isEmulator()
+      }
 
-        Geolocation.getCurrentPosition(location => {
+    const getLastLocation = () => {
+        const postRetrieveLocation = (location) => {
             moveToRegion(location.coords);
             reverseGeocode(location.coords);
-            //  return location;
-        }, error => console.log('===getLastLocation error response=', error), {
+        };
+
+        const onError = (error) => console.log('=== getLastLocation error response ===', error);
+
+        const options = {
             enableHighAccuracy: false,
             timeout: 2000,
-        }
-        );
+        };
+        console.log(isEmulator);
+        let locationProvider = isEmulator ? Geolocation_2 : Geolocation;
+
+        locationProvider.getCurrentPosition(postRetrieveLocation, onError, options);
     };
 
     const reverseGeocode = (location) => {
         const { latitude, longitude } = location;
-        console.log('=====reverseGeocode location====', location);
+      //  console.log('=====reverseGeocode location====', location);
         Geocoder.from(latitude, longitude)
             .then(json => {
                 const addressComponent = json.results[0].address_components[0]
-                console.log('====Geocoder adressComponent ====', addressComponent)
+              //  console.log('====Geocoder adressComponent ====', addressComponent)
                 setLocation(addressComponent);
             })
             .catch(console.warn);
@@ -52,25 +67,25 @@ function locationScreen(props) {
 
     const onRegionChange = (region) => {
         marker.current.animateMarkerToCoordinate(region, 1000);
-        console.log('===onregionchange value===',region)
+     //   console.log('===onregionchange value===', region)
         reverseGeocode(region);
     };
 
     const moveToRegion = (location) => {
-        const region = { 
-            latitude : location.latitude, 
+        const region = {
+            latitude: location.latitude,
             longitude: location.longitude,
-            latitudeDelta: 0.05, 
-            longitudeDelta: 0.05 };
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05
+        };
         maps.current.animateToRegion(region, 100);
     };
-    
+
     const onPress = () => {
-     console.log('onpressteki state değeri==',location)
-     props.addUserLocation(location);
-     Alert.alert('Adresiniz başarılıya kaydedildi.');
-     navigation.navigate('Platron');
-     
+      //  console.log('onpressteki state değeri==', location)
+        props.addUserLocation(location);
+        Alert.alert('Adresiniz başarılıya kaydedildi.');
+        navigation.navigate('Platron');
     }
 
     return (
@@ -91,23 +106,21 @@ function locationScreen(props) {
                         initialRegion={initialRegion}>
                         <Marker ref={marker} coordinate={initialRegion} />
                     </MapView>
-
-
                 </View>
-                <View style={{ marginTop: '1%', flex:1 }}>
+
+                <View style={{ marginTop: '1%', flex: 1 }}>
                     {location.types == "street_number" &&
-                      <Text style={styles.addressText}>Sokak numarası:{location.long_name}</Text>
+                        <Text style={styles.addressText}>Sokak numarası:{location.long_name}</Text>
                     }
                     {location.types != "street_number" && location.long_name != "Unnamed Road" &&
-                      <Text style={styles.addressText} >{location.long_name}</Text>
+                        <Text style={styles.addressText} >{location.long_name}</Text>
                     }
                     {location.types == "route" && location.long_name === "Unnamed Road" &&
-                      <Text style={styles.addressText}>Isimsiz bölge</Text>
+                        <Text style={styles.addressText}>Isimsiz bölge</Text>
                     }
-                  
-                    
                 </View>
             </View>
+
             <View style={{ flex: 1 }}>
                 <TouchableOpacity
                     style={styles.continue}
@@ -119,7 +132,8 @@ function locationScreen(props) {
         </View>
     )
 }
-const mapStateToProps = state => ({location: state.location });
+
+const mapStateToProps = state => ({ location: state.location });
 const mapDispatchToProps = {
     addUserLocation
 };
@@ -144,7 +158,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     addressText: {
-        fontStyle:'italic', color: 'white'
+        fontStyle: 'italic', color: 'white'
     },
     mapContainer: {
         alignItems: 'center',
@@ -169,7 +183,7 @@ const styles = StyleSheet.create({
     },
     continue: {
         borderWidth: 1,
-        borderColor:'#2F3A47', //'#9933ff'
+        borderColor: '#2F3A47', //'#9933ff'
         backgroundColor: '#61A5EA',
         width: '75%',
         height: '30%',

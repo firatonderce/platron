@@ -11,7 +11,6 @@ import {
 
 
 const Input = props => (
-  console.log('propsss', props),
   <View style={styles.login}>
     <View style={styles.header}>
       <Text style={styles.headerText}>
@@ -47,7 +46,6 @@ const Input = props => (
       </View>
     </View>
   </View>
-
 );
 
 

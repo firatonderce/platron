@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import {default as EmulatorGeolocation} from 'react-native-geolocation-service'; //Emülatörde anlık konumu doğru olarak bu alabiliyor
+import {default as EmulatorGeolocation} from 'react-native-geolocation-service'; 
 import Geolocation from '@react-native-community/geolocation' 
 import Geocoder from 'react-native-geocoding';
 import { connect } from 'react-redux';
@@ -14,18 +14,19 @@ Geocoder.init(API_KEY);
 function locationScreen(props) {
     const maps = useRef();
     const marker = useRef();
-    const { navigation, id } = props;
-    const [location, setLocation] = useState('Selam');
+    const { navigation } = props;
+    const [location, setLocation] = useState(' ');
     const initialRegion = { longitude: 29.0231832, latitude: 41.0322351, latitudeDelta: 0.05, longitudeDelta: 0.05 };
-    const [isEmulator, setIsEmulator] = useState(null);
+   // const [locationProvider , setLocationProvider] = useState(EmulatorGeolocation);
+
     
 
     useEffect(() => {
-        getDeviceType().then(isEmulator => {  
-            setIsEmulator(isEmulator);
+       /* getDeviceType().then(isEmulator => {     
             var locationProvider = isEmulator ? EmulatorGeolocation : Geolocation ;
-            getLastLocation(locationProvider);
-        })
+            setLocationProvider(locationProvider);
+        })*/
+        getLastLocation();
         return;
     }, []);
 
@@ -33,7 +34,7 @@ function locationScreen(props) {
         return DeviceInfo.isEmulator()
       }
 
-    const getLastLocation = (locationProvider) => {
+    const getLastLocation = () => {
         const postRetrieveLocation = (location) => {
             moveToRegion(location.coords);
             reverseGeocode(location.coords);
@@ -46,16 +47,14 @@ function locationScreen(props) {
             timeout: 2000,
         };
     
-        locationProvider.getCurrentPosition(postRetrieveLocation, onError, options);
+        EmulatorGeolocation.getCurrentPosition(postRetrieveLocation, onError, options);
     };
 
     const reverseGeocode = (location) => {
         const { latitude, longitude } = location;
-      //  console.log('=====reverseGeocode location====', location);
         Geocoder.from(latitude, longitude)
             .then(json => {
                 const addressComponent = json.results[0].address_components[0]
-              //  console.log('====Geocoder adressComponent ====', addressComponent)
                 setLocation(addressComponent);
             })
             .catch(console.warn);
@@ -64,7 +63,6 @@ function locationScreen(props) {
 
     const onRegionChange = (region) => {
         marker.current.animateMarkerToCoordinate(region, 1000);
-     //   console.log('===onregionchange value===', region)
         reverseGeocode(region);
     };
 
@@ -79,7 +77,6 @@ function locationScreen(props) {
     };
 
     const onPress = () => {
-      //  console.log('onpressteki state değeri==', location)
         props.addUserLocation(location);
         Alert.alert('Adresiniz başarılıya kaydedildi.');
         navigation.navigate('Platron');
@@ -161,7 +158,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '85%',
-        height: '80%',
+        height: '70%',
         overflow: 'hidden',
         borderWidth: 2,
         borderRadius: 500,

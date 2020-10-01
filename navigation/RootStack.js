@@ -14,7 +14,7 @@ const RootContainer = props =>  {
     console.log(JSON.stringify(props, null, 2));
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="locationPage">
+        <Stack.Navigator initialRouteName="Platron">
           <Stack.Screen name="login" component={Screens.login} />
           <Stack.Screen options={{ headerShown: false }} name="Platron" component={Tabs} />
           <Stack.Screen name="basket" component={Screens.basket} />

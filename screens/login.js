@@ -3,7 +3,6 @@ import {
   Text,
   View,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   Alert,
   Image
@@ -16,24 +15,20 @@ import { addUserPhone, logOut } from '../store/action';
 
 function login(props) {
   const { navigation, login,location } = props;
-  console.log('LOCASYON BU',location);
   const [phone, setPhone] = useState('+90');
 
   const _logOut = () => {
     props.logOut();
-    console.log('Login bool = ', props.login);
     Alert.alert('Çıkış yapıldı, Anasayfaya yönlendiriliyorsunuz');
     navigation.navigate('Home');
   }
 
   const _phoneNoInput = () => {
     props.addUserPhone(phone);
-    console.log('Phone Input =', props.phone)
     navigation.navigate('OTP');
   };
 
   const _signUp = () => {
-    console.log('signUP');
     navigation.navigate('phonesign');
   }
 

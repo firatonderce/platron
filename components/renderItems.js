@@ -1,7 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
 import {
-  Alert,
-  ScrollView,
   View,
   Text,
   Image,
@@ -39,7 +37,7 @@ function RenderItems(props) {
         <Text style={styles.itemText}>{name}</Text>
         <View style={styles.counterView}>
           <View style={styles.minus}>
-            <View style={styles.categoryPlusMinus} />
+            <View style={{...styles.categoryPlusMinus,borderWidth:0}} />
           </View>
           <Text style={styles.counter}>{itemCount}</Text>
           <View style={styles.plus}>
@@ -67,7 +65,9 @@ function RenderItems(props) {
               <TouchableOpacity
                 style={styles.categoryPlusMinus}
                 onPress={deleteBasketItem}>
+                <View>
                 <Text style={styles.categoryPlusMinusText}>-</Text>
+                </View>
               </TouchableOpacity>
             )}
           </View>
@@ -87,26 +87,28 @@ function RenderItems(props) {
 export default RenderItems;
 const styles = StyleSheet.create({
   categoryPlusMinus: {
+    width: 30,
+    height: 30,
     borderRadius: 25,
-    borderWidth: 3,
-    //borderColor: 'grey',
-    paddingLeft: 10,
+    borderWidth: 4,
+    alignContent :'center',
+    justifyContent: 'center' ,
   },
   minus: {
-    borderColor: 'white',
-    borderWidth: 1,
+    alignContent:'center',
+    justifyContent:'center'
     
   },
   plus: {
-    borderColor: 'black',
-    borderWidth: 0,
     marginLeft: '10%',
+    alignContent:'center',
+    justifyContent:'center'
   },
   counter: {
     marginLeft: '10%',
   },
   categoryPlusMinusText: {
-    //fontSize: 30,
+    alignSelf:'center'
   },
   outerView: {
     marginBottom: 0,

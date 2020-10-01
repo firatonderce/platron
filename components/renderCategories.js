@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   useState,
   View,
@@ -14,7 +14,7 @@ export default class RenderCategories extends Component {
   }
 
   render() {
-    const {product, nav} = this.props;
+    const { product, nav } = this.props;
     const itemList = product.items;
     const uri = product.img;
     const isAll = false;
@@ -22,11 +22,11 @@ export default class RenderCategories extends Component {
       <View>
         <TouchableOpacity
           style={styles.square}
-          onPress={() => nav.navigate('categoryPage', {itemList , product, isAll})}>
-           <Image
+          onPress={() => nav.navigate('categoryPage', { itemList, product, isAll })}>
+          <Image
             style={styles.image}
             source={uri}
-           />
+          />
         </TouchableOpacity>
       </View>
     );
@@ -35,10 +35,9 @@ export default class RenderCategories extends Component {
 const styles = StyleSheet.create({
   square: {
     height: 100,
-   marginLeft: '15%',
-   marginRight: '15%',
-   marginBottom: '10%',
-  // padding: 11,
+    marginLeft: '15%',
+    marginRight: '15%',
+    marginBottom: '10%',
     borderWidth: 1,
     marginTop: '10%',
     borderColor: '#a0cdd3',
@@ -47,6 +46,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'stretch',
- 
+
   },
 });
